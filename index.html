@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Little World of Your Own ♡</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&family=Pacifico&display=swap');
+:root{--paper:#f6eee2;--ink:#514237;--rose:#c98583;--rose2:#e9c0b8;--sage:#71806a;--cream:#fffaf2;--gold:#b69a68}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:'DM Sans',sans-serif;background-color:var(--paper);background-image:linear-gradient(#f6eee2c4,#f6eee2c4),url('assets/lily_watermark.jpg'),radial-gradient(#bba58b30 1px,transparent 1.5px);background-position:center,center top,center;background-size:auto, min(100vw,900px) auto,13px 13px;background-repeat:repeat-y,repeat-y,repeat;overflow-x:hidden}
+button{font:inherit;cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #7f9fbd;outline-offset:3px}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:var(--rose);z-index:30;transition:width .25s}
+nav{position:fixed;z-index:20;top:12px;left:50%;transform:translateX(-50%);display:flex;gap:5px;padding:7px;background:#fffaf0dc;border:1px solid #d8c8b3;border-radius:40px;box-shadow:0 6px 22px #54402b16;backdrop-filter:blur(10px);max-width:95vw}
+nav button{border:0;background:transparent;color:#78675a;border-radius:30px;padding:9px 13px;font-size:.78rem;font-weight:700}nav button.active,nav button:hover{background:#ead0c8;color:#533f37}
+.top-quote{position:fixed;z-index:20;top:12px;left:50%;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 28px);padding:12px 22px;border:1px solid #edcbd7;border-radius:24px;background:#fff8fbeF;box-shadow:0 6px 22px #9c617018;backdrop-filter:blur(10px);text-align:center;color:#865466;font-family:'Playfair Display',serif;font-size:clamp(.76rem,1.7vw,1rem);font-style:italic;line-height:1.45}.top-quote span{color:#d77f9b;font-style:normal;margin-left:5px}
+.slide{min-height:100svh;padding:90px 18px 55px;display:none;align-items:center;justify-content:center;position:relative;isolation:isolate}.slide.active{display:flex;animation:pageIn .7s cubic-bezier(.2,.75,.2,1) both}
+.paper{width:min(900px,100%);position:relative;padding:clamp(26px,5vw,64px);background:var(--cream);border:1px solid #ddcdb8;box-shadow:0 15px 35px #59452c20,7px 7px 0 #ddc9b2;transform:rotate(-.3deg);text-align:center;overflow:visible}
+.paper:before{content:"";position:absolute;inset:10px;border:1px dashed #c8b39a;pointer-events:none}
+.eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--sage);font-weight:700}
+h1,h2{font-family:'Playfair Display',serif;font-weight:500;line-height:1.1;margin:18px 0;color:#72584a}h1{font-size:clamp(2.8rem,8vw,6.4rem)}h2{font-size:clamp(2.2rem,5.5vw,4rem)}p{line-height:1.85;max-width:610px;margin:12px auto 20px}
+.script{font-family:'Pacifico',cursive;color:var(--rose);font-weight:400}.btn{border:1px solid #ba8b7f;background:#c98583;color:#fffaf5;border-radius:3px;padding:13px 20px;box-shadow:4px 4px 0 #e7c9bd;transition:transform .2s,box-shadow .2s}.btn:hover{transform:translate(-2px,-3px) rotate(-1deg);box-shadow:7px 7px 0 #e7c9bd}.btn.ghost{background:#f7eee1;color:#72584a;border-color:#d5c2a9;box-shadow:3px 3px 0 #e1d2bf}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px}
+.heroFlowers{width:min(250px,62vw);margin:0 auto -5px;display:block;mix-blend-mode:multiply;filter:drop-shadow(0 10px 10px #604b3014);animation:sway 5s ease-in-out infinite}.introRibbon{display:inline-block;padding:9px 18px;border:1px solid #d7bca9;background:#f3e4d6;transform:rotate(-2deg);font-family:'Playfair Display',serif;font-style:italic;color:#87685b;margin:12px auto}.sparkleLine{font-size:1.35rem;letter-spacing:.55em;color:#b99a78;margin:12px 0}.openSub{font-size:1.05rem}
+.corner{position:absolute;width:clamp(70px,13vw,140px);mix-blend-mode:multiply;pointer-events:none;filter:drop-shadow(0 4px 3px #4b35261a)}.tl{top:-28px;left:-25px;transform:rotate(-12deg)}.tr{top:-30px;right:-20px;transform:rotate(10deg)}.bl{bottom:-40px;left:-24px;transform:rotate(9deg)}.br{bottom:-34px;right:-24px;transform:rotate(-9deg)}
+.cutout{position:absolute;width:clamp(75px,12vw,130px);height:auto;mix-blend-mode:multiply;pointer-events:none;filter:drop-shadow(0 4px 4px #5c46331c);z-index:2}.cutout-tl{top:-25px;left:-16px;transform:rotate(-7deg)}.cutout-tr{top:-22px;right:-16px;transform:rotate(7deg)}.cutout-bl{bottom:-28px;left:-14px;transform:rotate(5deg)}.cutout-br{bottom:-26px;right:-15px;transform:rotate(-7deg)}.tape{position:absolute;top:-14px;left:36%;width:130px;height:30px;background:#d9bd8d91;transform:rotate(-3deg);box-shadow:0 1px 2px #66513b18}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin:28px auto;max-width:700px}.choice{background:#f4e6d8;border:1px solid #d9c3ac;padding:16px 8px 12px;min-height:130px;color:var(--ink);transition:transform .25s;position:relative}.choice:hover{transform:translateY(-7px) rotate(1deg)}.choice img{height:85px;width:100%;object-fit:contain;mix-blend-mode:multiply}.choice span{display:block;font-family:'Playfair Display',serif;font-size:1.05rem;margin-top:6px}
+/* Gift-only hover hearts: each heart originates inside the gift currently hovered. */
+.choice{overflow:visible;isolation:isolate}.gift-heart{position:absolute;left:var(--heart-x,50%);top:var(--heart-y,55%);z-index:5;pointer-events:none;color:var(--heart-color,#e78ba7);font-size:var(--heart-size,18px);line-height:1;opacity:0;animation:giftHeartFloat var(--heart-duration,1.25s) ease-out forwards;filter:drop-shadow(0 2px 2px #b85c7a25)}
+@keyframes giftHeartFloat{0%{opacity:0;transform:translate(-50%,-10%) scale(.45) rotate(-12deg)}15%{opacity:1}65%{opacity:.9}100%{opacity:0;transform:translate(calc(-50% + var(--heart-drift,0px)),-85px) scale(1.15) rotate(18deg)}}
+@media(prefers-reduced-motion:reduce){.gift-heart{animation-duration:.01ms}}
+
+.letter-book-shell{max-width:650px;margin:24px auto 10px}
+.letter-scrollbox{position:relative;text-align:left;background:#fff8fb;border:1px solid #e6bdca;box-shadow:6px 7px 0 #f1d8df;padding:28px 24px 22px;max-height:min(58vh,520px);min-height:300px;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:smooth;transform:rotate(-.2deg);scrollbar-color:#d7a0b2 #fff0f5;scrollbar-width:thin}
+.letter-scrollbox:before{content:"";position:absolute;inset:10px;border:1px dashed #e5bdca;pointer-events:none}
+.ruled-paper{position:relative;white-space:pre-wrap;font-family:'Playfair Display',serif;font-size:clamp(1rem,2.5vw,1.15rem);line-height:2.1;padding:0 10px 0 18px;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(2.1em - 1px),#e5c5d0 2.1em);background-position:0 0}
+.ruled-paper:before{content:"";position:absolute;top:0;bottom:0;left:4px;border-left:1px solid #e2a3b3;opacity:.8}
+.letter-sign{text-align:right;color:#c47791;font-family:'Pacifico',cursive;font-size:1.5rem;margin-top:18px;position:relative}
+
+.letter{max-width:650px;margin:25px auto;padding:clamp(22px,4vw,40px);text-align:left;white-space:pre-line;background:#f7e8e3;border:1px solid #d8b4a9;box-shadow:5px 6px 0 #e7d0c3;line-height:2;font-family:'Playfair Display',serif;font-size:1.08rem;position:relative}
+.stamp{display:inline-grid;place-items:center;border:2px dashed #b58e76;border-radius:50%;width:76px;height:76px;transform:rotate(12deg);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:#9a6e5b;margin:10px}
+.memories{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:640px;margin:25px auto}.polaroid{background:#fffdf7;padding:10px 10px 17px;box-shadow:0 5px 16px #4c39231e;transform:rotate(-2deg);transition:transform .3s}.polaroid:nth-child(even){transform:rotate(2deg)}.polaroid:hover{transform:scale(1.04) rotate(0);z-index:2}.photo{height:clamp(120px,24vw,220px);background:#eadfd0;display:grid;place-items:center;overflow:hidden;color:#947d67}.photo img{width:100%;height:100%;object-fit:cover}.caption{padding:10px 4px 0;font-family:'Playfair Display',serif;font-style:italic}.upload{display:block;text-align:left;font-size:.8rem;margin:9px auto;max-width:400px;color:#796a5b}.upload input{display:block;margin-top:5px;max-width:100%}
+.quiz{max-width:600px;margin:24px auto}.quiz button{margin:6px}.feedback{min-height:30px;color:var(--sage);font-weight:700}
+.reveal{display:none;margin:25px auto;padding:25px;border:1px dashed #bda58a;background:#f7f0e6;max-width:600px;animation:pageIn .5s both}.reveal.show{display:block}
+.finalHeart{font-size:5rem;display:inline-block;animation:heartbeat 1.2s infinite}.tiny{font-size:.8rem;color:#8e7b68}.footer{margin-top:28px;font-size:.72rem;letter-spacing:.1em;color:#8d7968}
+.floaty{position:fixed;z-index:40;pointer-events:none;animation:floatUp 3.2s ease-out forwards}
+#soundBtn{position:fixed;bottom:16px;right:16px;z-index:25;border:1px solid #d5c0a9;background:#fff9f0e8;color:#715c4c;border-radius:50px;padding:10px 14px;font-size:.8rem}
+@keyframes pageIn{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}@keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.16)}30%{transform:scale(1)}}@keyframes floatUp{0%{transform:translateY(0) rotate(0);opacity:0}15%{opacity:1}100%{transform:translateY(-105vh) rotate(40deg);opacity:0}}
+@media(max-width:560px){.top-quote{top:7px;padding:9px 14px;font-size:.73rem;width:calc(100vw - 24px)}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.paper{padding:34px 20px}.corner{width:80px}.tl{left:-8px}.tr{right:-8px}.memories{gap:10px}}
+
+/* Pink, floral scrapbook theme */
+:root{--paper:#fff0f5;--ink:#654650;--rose:#d77f9b;--rose2:#f2c4d3;--sage:#8b9274;--cream:#fff9fc;--gold:#c6a0a7}
+body{background-color:#fff0f5;background-image:linear-gradient(#fff0f5c9,#fff0f5c9),url('assets/lily_watermark.jpg'),radial-gradient(#e8aebe40 1px,transparent 1.5px)}
+#progress{background:#d77f9b}
+nav{background:#fff8fbe8;border-color:#edcbd7;box-shadow:0 6px 22px #9c617018}
+nav button{color:#866270}
+nav button.active,nav button:hover{background:#f6d8e3;color:#6d4051}
+.paper{background:#fff9fc;border-color:#edced8;box-shadow:0 15px 35px #a66b7b20,7px 7px 0 #f0d2dc}
+.paper:before{border-color:#e5bdcb}
+h1,h2{color:#8a5868}
+.btn{border-color:#c77d95;background:#d77f9b;box-shadow:4px 4px 0 #f2d0dc}
+.btn:hover{box-shadow:7px 7px 0 #f2d0dc}
+.btn.ghost{background:#fff0f5;color:#865466;border-color:#e7bdcb;box-shadow:3px 3px 0 #f4dce4}
+.heroFlowers{filter:drop-shadow(0 10px 10px #9c617018)}
+.introRibbon{border-color:#e6bdc8;background:#ffeaf1;color:#986779}
+.sparkleLine{color:#cf91a4}
+.cutout{filter:drop-shadow(0 4px 4px #9b65701c)}
+.letter-page{background:#fff8fb;border-color:#e6bdca;box-shadow:6px 7px 0 #f1d8df}
+.letter-page:before{border-color:#e5bdca}
+.ruled-paper{background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(2.1em - 1px),#e5c5d0 2.1em)}
+.ruled-paper:before{border-left-color:#e2a3b3}
+.page-count{color:#b17e8c}
+.letter-sign{color:#c47791}
+.letter{background:#fff0f4;border-color:#e6bdca;box-shadow:5px 6px 0 #f1d8df}
+.stamp{border-color:#d4a0ad;color:#a66d7d}
+#soundBtn{border-color:#e7bdcb;background:#fff8fbe8;color:#865466}
+
+/* Falling lily petals are clipped to the five-page letter section */
+#s2{overflow:hidden}
+#s2 .lily-petal-layer{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:3}
+#s2 .lily-petal{position:absolute;top:-45px;width:17px;height:29px;border-radius:90% 8% 85% 15%;background:linear-gradient(145deg,#fffdfd 0%,#f9dce7 58%,#e7a9bd 100%);box-shadow:inset -2px -2px 3px #d88ca044,0 2px 5px #a76c7b20;opacity:.82;animation:lilyPetalFall linear infinite;will-change:transform}
+#s2 .lily-petal:nth-child(3n){width:12px;height:22px;opacity:.68}
+#s2 .lily-petal:nth-child(4n){background:linear-gradient(145deg,#fff 0%,#f4cbd9 70%,#d995ad 100%)}
+@keyframes lilyPetalFall{0%{transform:translate3d(0,-30px,0) rotate(0deg);opacity:0}10%{opacity:.82}50%{transform:translate3d(28px,50vh,0) rotate(180deg)}90%{opacity:.72}100%{transform:translate3d(-18px,105vh,0) rotate(330deg);opacity:0}}
+@media(prefers-reduced-motion:reduce){#s2 .lily-petal{animation:none;display:none}}
+
+/* Secret garden opening gate: layered floral entrance */
+#identityGate{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:22px;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#fffaff 0%,#ffe8f1 42%,#e8a6c0 100%);transition:opacity 1s ease,visibility 1s ease}
+#identityGate:before,#identityGate:after{content:"";position:absolute;inset:-15%;pointer-events:none;background-image:radial-gradient(circle,#fff9 0 1.5px,transparent 2px),radial-gradient(circle,#e89bbd88 0 2px,transparent 3px);background-size:47px 53px,71px 67px;background-position:0 0,23px 19px;animation:fairyDrift 16s linear infinite}
+#identityGate:after{opacity:.45;transform:rotate(14deg);animation-duration:23s}
+#identityGate.gate-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.gate-glow{position:absolute;width:min(85vw,780px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff9 0%,#f8bfd3aa 42%,transparent 70%);animation:glowPulse 4s ease-in-out infinite;pointer-events:none}
+.gate-card{position:relative;z-index:3;width:min(590px,100%);padding:clamp(22px,4vw,38px) clamp(18px,4vw,40px) 28px;text-align:center;background:linear-gradient(145deg,#fffdf9f2,#fff1f7eF);border:1px solid #e8b6cb;border-radius:8px;box-shadow:0 28px 90px #9d52702e,0 0 0 8px #fff5,0 0 0 10px #f1bfd2aa;overflow:hidden;animation:cardArrive 1.1s cubic-bezier(.2,.8,.2,1) both}
+.gate-card:before{content:"";position:absolute;inset:10px;border:1px solid #e8bdcf;pointer-events:none}
+.gate-topline{position:relative;z-index:1;font-size:.65rem;letter-spacing:.23em;color:#b47b91}
+.gate-bloom{height:104px;position:relative;display:grid;place-items:center;margin:5px auto 0}
+.gate-flower{font-size:5rem;line-height:1;color:#d77fa4;filter:drop-shadow(0 6px 12px #bd6e932c);animation:flowerOpen 4s ease-in-out infinite;display:block}
+.gate-flower-small{position:absolute;font-size:2.5rem;color:#f1b4cc;left:calc(50% + 35px);top:8px;animation:flowerOrbit 8s linear infinite}
+.bloom-ring{position:absolute;border:1px solid #edb6ce;border-radius:50%;width:82px;height:82px;animation:ringBloom 4s ease-in-out infinite}
+.ring-two{width:104px;height:104px;animation-delay:.6s}
+.gate-vine{position:absolute;z-index:1;top:12%;font-size:clamp(5rem,14vw,10rem);color:#c77b9b;opacity:.24;writing-mode:vertical-rl;pointer-events:none}
+.vine-left{left:2%;transform:rotate(18deg)}.vine-right{right:2%;transform:rotate(198deg)}
+.gate-title{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,7vw,4.4rem);line-height:1.05;color:#875066;margin:10px 0}
+.gate-sub{color:#9d7184;max-width:390px;margin:0 auto 20px;line-height:1.65;font-size:.95rem}
+.identity-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 auto 17px;max-width:440px;text-align:left}
+.identity-choice{position:relative;isolation:isolate;display:flex;align-items:center;gap:10px;min-height:58px;padding:11px 14px;background:transparent;border:0;clip-path:polygon(5% 10%,18% 3%,35% 7%,49% 1%,66% 6%,82% 2%,96% 12%,93% 29%,99% 45%,94% 65%,97% 84%,81% 94%,64% 91%,47% 99%,31% 93%,13% 97%,4% 83%,8% 65%,1% 47%,6% 29%);cursor:pointer;transition:transform .22s,filter .22s,color .22s;color:#80596a}
+.identity-choice:before{content:"";position:absolute;inset:0;z-index:-2;background:#edccda;clip-path:polygon(5% 10%,18% 3%,35% 7%,49% 1%,66% 6%,82% 2%,96% 12%,93% 29%,99% 45%,94% 65%,97% 84%,81% 94%,64% 91%,47% 99%,31% 93%,13% 97%,4% 83%,8% 65%,1% 47%,6% 29%)}
+.identity-choice:after{content:"";position:absolute;inset:1px;z-index:-1;background:linear-gradient(145deg,#fffdfd,#fff4f8);clip-path:polygon(5% 10%,18% 3%,35% 7%,49% 1%,66% 6%,82% 2%,96% 12%,93% 29%,99% 45%,94% 65%,97% 84%,81% 94%,64% 91%,47% 99%,31% 93%,13% 97%,4% 83%,8% 65%,1% 47%,6% 29%);transition:background .22s}
+.identity-choice:hover{transform:translateY(-3px) rotate(-.6deg);filter:drop-shadow(0 7px 7px #d58eaa30)}
+.identity-choice input{position:absolute;opacity:0;pointer-events:none}
+.choice-letter{display:grid;place-items:center;flex:0 0 27px;height:27px;border:1px solid #e5b6c9;border-radius:50%;font-size:.75rem;color:#b46c8b;background:#fff9fc}
+.choice-text{font-size:.9rem;line-height:1.3;font-weight:600}
+.choice-heart{margin-left:auto;color:#d98eac;font-size:1.2rem}
+.identity-choice:has(input:checked):before{background:#cf7d9f}
+.identity-choice:has(input:checked):after{background:linear-gradient(145deg,#ffeaf2,#fbd5e4)}
+.identity-choice:has(input:checked) .choice-letter{background:#d98eac;color:white}
+.identity-choice.wrong-choice{animation:wrongWiggle .36s ease}
+@keyframes wrongWiggle{0%,100%{transform:translateX(0) rotate(0)}25%{transform:translateX(-5px) rotate(-1deg)}75%{transform:translateX(5px) rotate(1deg)}}
+#identitySubmit{margin-top:1px;position:relative;z-index:1}
+#identityError{min-height:24px;color:#b85d7d;font-size:.88rem;margin-top:10px}
+.gate-hint{font-size:.68rem;letter-spacing:.12em;color:#b58a98;margin-top:12px}
+#gatePetalStage{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:9999}
+.gate-petal{position:absolute;top:-22vh;left:var(--x);width:var(--w);height:var(--h);border-radius:90% 8% 90% 8%;background:linear-gradient(135deg,#fff 0%,#ffe5f0 32%,#f5a9c8 68%,#c76d94 100%);box-shadow:inset 4px 3px 8px #fff9,inset -5px -6px 10px #b9577e25,0 5px 12px #9f557522;opacity:0;transform:rotate(var(--rot));animation:petalCascade var(--duration) linear var(--delay) infinite}
+.gate-petal.photo-petal{width:var(--w);height:var(--h);border-radius:70% 12% 70% 12%;overflow:hidden;background:linear-gradient(145deg,#fff2f8,#e8a0bd);padding:5px;box-shadow:0 12px 30px #8b3b5e44,inset 0 0 0 1px #fff8}
+.gate-petal.photo-petal img{width:100%;height:100%;object-fit:cover;border-radius:inherit;filter:saturate(.78) contrast(.95);mix-blend-mode:normal}
+.gate-petal.photo-petal:after{content:"";position:absolute;inset:5px;border-radius:inherit;background:linear-gradient(145deg,#fff3 0%,transparent 42%,#c55d8c55 100%);pointer-events:none}
+@keyframes cardArrive{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes flowerOpen{0%,100%{transform:scale(.88) rotate(-7deg)}50%{transform:scale(1.12) rotate(7deg)}}
+@keyframes flowerOrbit{to{transform:rotate(360deg) translateX(8px) rotate(-360deg)}}
+@keyframes ringBloom{0%,100%{transform:scale(.82);opacity:.35}50%{transform:scale(1.12);opacity:.9}}
+@keyframes glowPulse{0%,100%{transform:scale(.92);opacity:.55}50%{transform:scale(1.08);opacity:.95}}
+@keyframes fairyDrift{to{background-position:0 320px,23px 379px}}
+@keyframes petalCascade{0%{transform:translate3d(0,-18vh,0) rotate(var(--rot)) scale(.55);opacity:0}7%{opacity:var(--op,.95)}50%{transform:translate3d(var(--sway),70vh,0) rotate(calc(var(--rot) + 240deg)) scale(1)}100%{transform:translate3d(calc(var(--sway) * -1),155vh,0) rotate(calc(var(--rot) + 560deg)) scale(.82);opacity:0}}
+#identityGate.garden-opening .gate-card{animation:cardBloomAway .9s ease forwards}
+@keyframes cardBloomAway{to{transform:scale(.9);opacity:0;filter:blur(5px)}}
+@media(max-width:420px){.identity-options{grid-template-columns:1fr;gap:7px}.identity-choice{min-height:48px}.gate-bloom{height:85px}.gate-vine{opacity:.13}}
+@media(prefers-reduced-motion:reduce){#identityGate:before,#identityGate:after,.gate-flower,.gate-flower-small,.bloom-ring,.gate-glow{animation:none}.gate-petal{animation-duration:2s}}
+
+/* Per-photo memory song bars */
+.memory-soundbar{display:flex;align-items:center;gap:9px;margin:9px 5px 7px;padding:7px 9px;background:linear-gradient(120deg,#fff7fb,#fce8f0);border:1px solid #e8bfd0;border-radius:16px;box-shadow:0 3px 9px #b46c8b12}
+.memory-play{display:flex;align-items:center;gap:6px;flex:0 0 auto;border:0;border-radius:12px;padding:5px 8px;background:#f5d5e2;color:#875066;font-size:.7rem;font-weight:700;cursor:pointer;transition:background .2s,transform .2s}
+.memory-play:hover,.memory-soundbar.is-playing .memory-play{background:#e9a9c2;transform:translateY(-1px)}
+.memory-track{height:4px;flex:1;min-width:18px;background:#ead0dc;border-radius:99px;overflow:hidden}
+.memory-track-fill{display:block;width:0;height:100%;background:linear-gradient(90deg,#d978a0,#b9658b);border-radius:99px;transition:width .12s linear}
+.memory-soundbar.is-playing .memory-play span:after{content:" · playing"}
+.memory-soundbar{min-width:0}
+@media(max-width:480px){.memory-soundbar{gap:6px;padding:6px}.memory-play{font-size:.65rem;padding:5px 6px}}
+
+/* Playful yes/no love quiz */
+.love-question{display:flex;justify-content:center;align-items:center;gap:20px;min-height:115px;position:relative;overflow:visible}
+.love-question button{transition:transform .22s ease,box-shadow .22s ease}
+#noLoveBtn{position:relative;z-index:4;touch-action:manipulation;will-change:left,top,transform;transition:left .48s cubic-bezier(.22,.8,.25,1),top .48s cubic-bezier(.22,.8,.25,1),transform .48s cubic-bezier(.22,.8,.25,1)}
+#yesLoveBtn{position:relative;z-index:2;box-shadow:0 7px 18px #d978a02b}
+#yesLoveBtn:hover{transform:translateY(-2px) scale(1.04)}
+.yes-image-reveal{display:none;position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#fffafd 0%,#ffeaf3 58%,#f3b5ce 100%);opacity:0;visibility:hidden;pointer-events:none;overflow:hidden}
+.yes-image-reveal.show{display:flex;visibility:visible;animation:yesRevealWhole 4.8s ease forwards}
+.yes-image-halo{position:absolute;width:36px;height:36px;border-radius:50%;background:#f7b6d0;opacity:0;box-shadow:0 0 35px 12px #f7b6d055;animation:haloBloom 4.8s ease-out forwards}
+.love-message{position:relative;z-index:2;padding:0 18px;text-align:center;font-family:'Playfair Display',serif;font-size:clamp(2.7rem,9vw,6.8rem);font-weight:700;line-height:1.12;letter-spacing:.01em;color:#e477a5;text-shadow:0 5px 25px #e477a54a,0 0 2px #fff;opacity:0;transform:scale(.04);filter:blur(12px);animation:loveTextBloom 4.8s cubic-bezier(.18,.7,.24,1) forwards}
+.love-message span{display:inline-block;color:#d75d91;animation:heartPulse 1.1s ease-in-out infinite alternate}
+@keyframes yesRevealWhole{0%{opacity:0}12%,75%{opacity:1}100%{opacity:0;visibility:hidden}}
+@keyframes loveTextBloom{0%{opacity:0;transform:scale(.04);filter:blur(12px)}18%{opacity:1;transform:scale(1);filter:blur(0)}45%{opacity:1;transform:scale(1.06);filter:blur(0)}100%{opacity:0;transform:scale(1.65);filter:blur(10px)}}
+@keyframes haloBloom{0%{opacity:0;transform:scale(.1)}20%{opacity:.6}100%{opacity:0;transform:scale(24)}}
+@keyframes heartPulse{from{transform:scale(.9)}to{transform:scale(1.15)}}
+@media(max-width:480px){.love-question{gap:12px;min-height:140px;flex-wrap:wrap}#noLoveBtn,#yesLoveBtn{font-size:.9rem}}
+</style></head>
+<body>
+
+
+<div id="identityGate" role="dialog" aria-modal="true" aria-labelledby="gateQuestion">
+  <div class="gate-glow"></div>
+  <div class="gate-vine vine-left">❦</div><div class="gate-vine vine-right">❦</div>
+  <div id="gatePetalStage" aria-hidden="true"></div>
+  <div class="gate-card">
+    <div class="gate-topline">✧  A LITTLE SECRET GARDEN  ✧</div>
+    <div class="gate-bloom">
+      <span class="bloom-ring ring-one"></span><span class="bloom-ring ring-two"></span>
+      <span class="gate-flower">✿</span><span class="gate-flower-small">❀</span>
+    </div>
+    <div class="eyebrow">only one person knows the way in</div>
+    <h1 class="gate-title" id="gateQuestion">Who are youuu?</h1>
+    <p class="gate-sub">Choose the one that belongs here, and let the garden open just for you. ♡</p>
+    <form id="identityForm">
+      <div class="identity-options" role="radiogroup" aria-label="Choose your identity">
+        <label class="identity-choice"><input type="radio" name="identityChoice" value="Frogg"><span class="choice-letter">A</span><span class="choice-text">Frogg</span><span class="choice-heart">♡</span></label>
+        <label class="identity-choice"><input type="radio" name="identityChoice" value="My Jaaaannnnuuuu"><span class="choice-letter">B</span><span class="choice-text">My Jaaaannnnuuuu</span><span class="choice-heart">♡</span></label>
+        <label class="identity-choice"><input type="radio" name="identityChoice" value="A secret admirer"><span class="choice-letter">C</span><span class="choice-text">A secret admirer</span><span class="choice-heart">♡</span></label>
+        <label class="identity-choice"><input type="radio" name="identityChoice" value="A random visitor"><span class="choice-letter">D</span><span class="choice-text">A random visitor</span><span class="choice-heart">♡</span></label>
+      </div>
+      <button class="btn" id="identitySubmit" type="submit">open my little world ♡</button>
+      <div id="identityError" role="status" aria-live="polite"></div>
+    </form>
+    <div class="gate-hint">pick carefully · the flowers are waiting</div>
+  </div>
+</div>
+
+<div id="progress"></div>
+<div class="top-quote" aria-label="A little quote">“Somewhere between the little things and the quiet moments, a heart finds its home.” <span>♡</span></div>
+<button id="soundBtn" onclick="toggleMusic()">♫ play song</button>
+<audio id="backgroundSong" src="./audio/mysong.mp3" loop preload="none"></audio>
+
+<section class="slide active" id="s0"><div class="paper">
+<img class="cutout cutout-tr" src="assets/vintage_daisy_sprig.jpg" alt=""><img class="cutout cutout-bl" src="assets/vintage_rose_cutout.jpg" alt=""><div class="tape"></div><img class="corner tl" src="assets/tulips.jpg" alt=""><img class="corner br" src="assets/roses.jpg" alt="">
+
+<div class="eyebrow">a little corner made just for you</div>
+<div class="sparkleLine">✧ · ˚ 　♡　 ˚ · ✧</div>
+<img class="heroFlowers" src="assets/lilies.jpg" alt="Soft lily bouquet">
+<div class="introRibbon">open when you need a little sunshine</div>
+<h1>For <span id="herNameTitle">MY HAYAT</span>,<br><span class="script">a little world of your own</span> ♡</h1>
+<p class="sub openSub">A few petals, a few memories, and some words I wanted you to keep. Take your time looking around. I made each page with care.</p>
+<div class="actions"><button class="btn" onclick="openEnvelope()">open your letter ✉</button><button class="btn ghost" onclick="sprinkle(30)">make it sparkle ✧</button></div>
+<div class="reveal" id="envelopeReveal"><div style="font-size:3rem">💌</div><p>Your little scrapbook is waiting inside.</p><button class="btn" onclick="next()">come on in ♡</button></div>
+<div class="footer">A FEW PETALS · A FEW WORDS · JUST FOR YOU</div></div></section>
+
+<section class="slide" id="s1"><div class="paper"><img class="cutout cutout-tr" src="assets/vintage_daisy_cutout.jpg" alt=""><img class="cutout cutout-bl" src="assets/vintage_postmark_cutout.jpg" alt="">
+<img class="corner tr" src="assets/daisies.jpg"><img class="corner bl" src="assets/lavender.jpg">
+<div class="eyebrow">pick a tiny bouquet</div><h2>Flowers for your mood</h2><p>Each bouquet has a little note. Tap one to open it.</p>
+<div class="grid">
+<button class="choice" onclick="gift('tulips')"><img src="assets/tulips.jpg"><span>for you ♡</span></button>
+<button class="choice" onclick="gift('daisies')"><img src="assets/daisies.jpg"><span>slow down</span></button>
+<button class="choice" onclick="gift('roses')"><img src="assets/roses.jpg"><span>choose joy</span></button>
+<button class="choice" onclick="gift('lavender')"><img src="assets/lavender.jpg"><span>peace of mind</span></button>
+<button class="choice" onclick="gift('pink_bouquet')"><img src="assets/pink_bouquet.jpg"><span>you are enough</span></button>
+<button class="choice" onclick="gift('sunflower')"><img src="assets/sunflower.jpg"><span>keep growing</span></button>
+</div><div id="giftReveal" class="reveal">You deserve all the soft, good things life has tucked away for you. ♡</div>
+<div class="actions"><button class="btn ghost" onclick="prev()">← previous</button><button class="btn" onclick="next()">next page →</button></div></div></section>
+
+<section class="slide" id="s2"><div class="lily-petal-layer" aria-hidden="true"></div><div class="paper letter-book">
+<img class="cutout cutout-tl" src="assets/vintage_daisy_cutout.jpg" alt=""><img class="cutout cutout-br" src="assets/vintage_butterfly_cutout.jpg" alt="">
+<div class="eyebrow">five little pages, just for you</div><h2>A letter from me to you</h2>
+<p>Turn each page when you're ready. A few words, written slowly.</p>
+<div class="letter-book-shell">
+  <div class="letter-scrollbox" id="letterScroll" tabindex="0" aria-label="Scrollable letter. Scroll inside this box to keep reading.">
+    <div class="ruled-paper" id="ruledText"></div>
+    <div class="letter-sign" id="letterSign">With care, ♡</div>
+  </div>
+  <p class="tiny">scroll inside the letter to keep reading ♡</p>
+</div>
+<div class="actions"><button class="btn ghost" onclick="go(1)">← flower gifts</button><button class="btn" onclick="go(3)">continue the scrapbook →</button></div>
+</div></section>
+
+<section class="slide" id="s3"><div class="paper"><img class="cutout cutout-tl" src="assets/vintage_daisy_sprig.jpg" alt=""><img class="cutout cutout-br" src="assets/vintage_butterfly_bottom.jpg" alt="">
+<img class="corner tr" src="assets/roses.jpg"><img class="corner bl" src="assets/tulips.jpg">
+<div class="eyebrow">collect moments, not things</div><h2>Our little scrapbook</h2><p>Little picture placeholders for now, like snapshots tucked into a scrapbook. The captions are editable if you want to make them more personal.</p>
+<div class="memories">
+<div class="polaroid"><div class="photo" id="photo0"><img src="assets/tulips.jpg" alt="Temporary floral photo"></div><div class="memory-soundbar" data-memory="0"><button type="button" class="memory-play" aria-label="Play memory song 1">♫ <span>memory song 1</span></button><div class="memory-track" aria-hidden="true"><span class="memory-track-fill"></span></div><audio class="memory-audio" preload="none" src="./audio/memory1.mp3"></audio></div><div class="caption" contenteditable="true">a favourite moment</div></div>
+<div class="polaroid"><div class="photo" id="photo1"><img src="assets/roses.jpg" alt="Temporary floral photo"></div><div class="memory-soundbar" data-memory="1"><button type="button" class="memory-play" aria-label="Play memory song 2">♫ <span>memory song 2</span></button><div class="memory-track" aria-hidden="true"><span class="memory-track-fill"></span></div><audio class="memory-audio" preload="none" src="./audio/memory2.mp3"></audio></div><div class="caption" contenteditable="true">you made me smile</div></div>
+<div class="polaroid"><div class="photo" id="photo2"><img src="assets/daisies.jpg" alt="Temporary floral photo"></div><div class="memory-soundbar" data-memory="2"><button type="button" class="memory-play" aria-label="Play memory song 3">♫ <span>memory song 3</span></button><div class="memory-track" aria-hidden="true"><span class="memory-track-fill"></span></div><audio class="memory-audio" preload="none" src="./audio/memory3.mp3"></audio></div><div class="caption" contenteditable="true">one to remember</div></div>
+<div class="polaroid"><div class="photo" id="photo3"><img src="assets/lavender.jpg" alt="Temporary floral photo"></div><div class="memory-soundbar" data-memory="3"><button type="button" class="memory-play" aria-label="Play memory song 4">♫ <span>memory song 4</span></button><div class="memory-track" aria-hidden="true"><span class="memory-track-fill"></span></div><audio class="memory-audio" preload="none" src="./audio/memory4.mp3"></audio></div><div class="caption" contenteditable="true">more memories soon</div></div>
+</div><div class="actions"><button class="btn ghost" onclick="prev()">← letter</button><button class="btn" onclick="next()">one quick game →</button></div></div></section>
+
+<section class="slide" id="s4"><div class="paper"><img class="cutout cutout-tr" src="assets/vintage_rose_cutout.jpg" alt=""><img class="cutout cutout-bl" src="assets/vintage_daisy_cutout.jpg" alt="">
+<img class="corner tl" src="assets/daisies.jpg"><img class="corner br" src="assets/purple_bouquet.jpg">
+<div class="eyebrow">a very serious question</div><h2>Do youu hateee mee?</h2><p>Choose honestly… I can handle it (probably). ♡</p>
+<div class="quiz love-question" id="loveQuestionArea"><button class="btn ghost" id="noLoveBtn" type="button">nooo 😶</button><button class="btn" id="yesLoveBtn" type="button">yesss 💗</button></div>
+<div class="feedback" id="feedback" aria-live="polite"></div><div class="reveal" id="quizReveal">hehehe i knew ittt 💗</div>
+<div class="actions"><button class="btn ghost" onclick="prev()">← back</button><button class="btn" onclick="next()">last page →</button></div></div></section>
+
+<section class="slide" id="s5"><div class="paper"><img class="cutout cutout-tl" src="assets/vintage_postmark_cutout.jpg" alt=""><img class="cutout cutout-br" src="assets/vintage_daisy_sprig.jpg" alt="">
+
+<div class="eyebrow">little things worth remembering</div><h2>Things I hope you never forget</h2>
+<div class="letter">You do not have to be perfect to be wonderful.
+
+You are allowed to rest without earning it first.
+
+Small steps still count, and slow growth is still growth.
+
+The world is better with your particular kind of sparkle in it. ♡</div>
+<div class="actions"><button class="btn ghost" onclick="prev()">← back</button><button class="btn" onclick="next()">one more page →</button></div></div></section>
+
+<section class="slide" id="s6"><div class="paper"><img class="cutout cutout-tl" src="assets/vintage_butterfly_cutout.jpg" alt=""><img class="cutout cutout-br" src="assets/vintage_rose_cutout.jpg" alt="">
+
+<div class="eyebrow">a final little note</div><div class="finalHeart">♡</div><h1 style="font-size:clamp(2.6rem,7vw,5rem)">Keep blooming.</h1>
+<p>Grow through what you go through. Keep the parts of you that are soft. Keep making room for joy. And never forget that ordinary days can hold beautiful things, too.</p>
+<div class="stamp">radiate<br>positivity ♡</div><h2 class="script" style="font-size:2rem">With care, <span id="yourNameEnd">Your Name</span></h2>
+<div class="actions"><button class="btn" onclick="sprinkle(45)">one last sprinkle ✨</button><button class="btn ghost" onclick="go(0)">start over ↺</button></div>
+<div class="footer">THE END · OR JUST THE BEGINNING</div></div></section>
+<div id="yesImageReveal" class="yes-image-reveal" aria-hidden="true">
+  <div class="yes-image-halo"></div>
+  <div class="love-message">I loveee youuu <span>♡</span></div>
+</div>
+<script>
+const HER_NAME="My Jaaaannnnuuuu"; const YOUR_NAME="Frogg";
+document.querySelectorAll('#herNameTitle,#herNameLetter').forEach(e=>e.textContent=HER_NAME);
+document.getElementById('yourNameEnd').textContent=YOUR_NAME;
+let current=0;
+function go(n){current=Math.max(0,Math.min(6,n));document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('active',i===current));document.querySelectorAll('nav button').forEach((b,i)=>b.classList.toggle('active',i===current));document.getElementById('progress').style.width=((current+1)/7*100)+'%';window.scrollTo({top:0,behavior:'smooth'});sprinkle(5)}
+function next(){go(current+1)}function prev(){go(current-1)}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>go(+b.dataset.go)));
+const letterPages = [
+`Dear Her Name,\n\nI wanted to make something a little different for you: not just a message that disappears in a chat, but a small place you can return to whenever you need a smile.\n\nSo here it is, made with care, one page at a time.`,
+`I hope you remember that you do not have to be perfect to be wonderful. You are allowed to have quiet days, messy days, uncertain days, and days when all you manage is getting through.\n\nThat counts, too. Be gentle with yourself.`,
+`I hope life gives you little joys without warning: flowers on an ordinary day, a song that finds you at the right moment, a laugh that makes your cheeks hurt, and people who make you feel safe being yourself.`,
+`Keep growing at your own pace. You do not have to rush to become someone else or have everything figured out. There is something lovely about the person you are becoming, even in the parts you are still learning.`,
+`And lastly, I hope this little website made you smile. Take the good things with you, leave the pressure behind, and remember that you deserve kindness in every season.\n\nWith care,\nYour Name ♡`
+];
+// Gentle falling lily petals, confined to the letter section only.
+(function makeLetterPetals(){
+ const layer=document.querySelector('#s2 .lily-petal-layer');
+ if(!layer)return;
+ for(let i=0;i<18;i++){
+  const petal=document.createElement('span');
+  petal.className='lily-petal';
+  petal.style.left=(4+Math.random()*92)+'%';
+  petal.style.animationDuration=(7+Math.random()*9)+'s';
+  petal.style.animationDelay=(-Math.random()*15)+'s';
+  petal.style.transform='rotate('+(Math.random()*360)+'deg)';
+  layer.appendChild(petal);
+ }
+})();
+function renderLetterPage(){
+  const fullLetter = letterPages
+    .map(page => page.replaceAll('Her Name', HER_NAME).replaceAll('Your Name', YOUR_NAME))
+    .join('\\n\\n');
+  document.getElementById('ruledText').textContent = fullLetter;
+  document.getElementById('letterSign').textContent = `With care, ${YOUR_NAME} ♡`;
+}
+
+async function openEnvelope() {
+    document.getElementById("envelopeReveal").classList.add("show");
+    sprinkle(18);
+
+    const audio = document.getElementById("backgroundSong");
+    const button = document.getElementById("soundBtn");
+
+    if (audio && audio.paused) {
+        try {
+            await audio.play();
+
+            // Keep the music button in sync.
+            if (typeof musicOn !== "undefined") {
+                musicOn = true;
+            }
+
+            if (button) {
+                button.textContent = "♫ pause song";
+            }
+        } catch (error) {
+            console.error("Music could not start:", error);
+        }
+    }
+}
+
+function giftHoverHearts(box){
+  const colors=['#e887a6','#d97891','#f0a9bc','#c982a0','#f5bfd0'];
+  const symbols=['♥','♡','❤'];
+  for(let i=0;i<7;i++){
+    const heart=document.createElement('span');
+    heart.className='gift-heart';
+    heart.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    heart.style.setProperty('--heart-x',(18+Math.random()*64)+'%');
+    heart.style.setProperty('--heart-y',(35+Math.random()*38)+'%');
+    heart.style.setProperty('--heart-color',colors[Math.floor(Math.random()*colors.length)]);
+    heart.style.setProperty('--heart-size',(12+Math.random()*13)+'px');
+    heart.style.setProperty('--heart-duration',(0.9+Math.random()*0.65)+'s');
+    heart.style.setProperty('--heart-drift',(-28+Math.random()*56)+'px');
+    box.appendChild(heart);
+    heart.addEventListener('animationend',()=>heart.remove(),{once:true});
+  }
+}
+document.querySelectorAll('#s1 .choice').forEach(box=>{
+  box.addEventListener('pointerenter',()=>giftHoverHearts(box));
+  box.addEventListener('focus',()=>giftHoverHearts(box));
+});
+function gift(kind){const messages={tulips:'For you: may someone remind you how lovely you are, especially on the days you forget. ♡',daisies:'Breathe. Slow down. You do not have to solve everything today.',roses:'Choose joy whenever you can, and let little things count.',lavender:'May your mind find quiet and your heart feel safe.',pink_bouquet:'You are enough exactly as you are. No extra conditions.',sunflower:'Keep growing at your own pace. There is no deadline for blooming.'};const r=document.getElementById('giftReveal');r.textContent=messages[kind];r.classList.add('show');sprinkle(14)}
+// Smooth, playful NO-button escape. It moves on hover, then settles instead of jittering.
+(function setupLoveQuestion(){
+  const area = document.getElementById("loveQuestionArea");
+  const noBtn = document.getElementById("noLoveBtn");
+  const yesBtn = document.getElementById("yesLoveBtn");
+  const reveal = document.getElementById("yesImageReveal");
+  const feedback = document.getElementById("feedback");
+  const quizReveal = document.getElementById("quizReveal");
+  if (!area || !noBtn || !yesBtn || !reveal) {
+    console.error("Love quiz setup failed: required element missing.", {area, noBtn, yesBtn, reveal});
+    return;
+  }
+
+  let isEscaping = false;
+  let lastMoveAt = 0;
+  let moveTimer = null;
+
+  function moveNoButton() {
+    const now = performance.now();
+    // Ignore repeated pointer events while the button is already gliding.
+    if (now - lastMoveAt < 420) return;
+    lastMoveAt = now;
+
+    const rect = noBtn.getBoundingClientRect();
+    const pad = 18;
+    const maxLeft = Math.max(pad, window.innerWidth - rect.width - pad);
+    const maxTop = Math.max(pad, window.innerHeight - rect.height - pad);
+    const currentX = rect.left;
+    const currentY = rect.top;
+
+    // Usually hop to a nearby spot; occasionally make a longer escape.
+    const nearby = Math.random() < 0.82;
+    const distance = nearby ? 95 + Math.random() * 105 : 180 + Math.random() * 100;
+    const angle = Math.random() * Math.PI * 2;
+    let left = currentX + Math.cos(angle) * distance;
+    let top = currentY + Math.sin(angle) * distance;
+
+    // Clamp into the visible screen, then try the opposite direction if clamping barely moves it.
+    left = Math.max(pad, Math.min(maxLeft, left));
+    top = Math.max(pad, Math.min(maxTop, top));
+    if (Math.hypot(left - currentX, top - currentY) < 65) {
+      left = Math.max(pad, Math.min(maxLeft, currentX - Math.cos(angle) * distance));
+      top = Math.max(pad, Math.min(maxTop, currentY - Math.sin(angle) * distance));
+    }
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = left + "px";
+    noBtn.style.top = top + "px";
+    noBtn.style.margin = "0";
+    noBtn.style.zIndex = "2100";
+    noBtn.style.transform = "rotate(" + (Math.random() * 10 - 5) + "deg)";
+    isEscaping = true;
+  }
+
+  // Only react when the pointer first reaches the button. No pointermove listener,
+  // so it won't keep changing destinations while the cursor tracks it.
+  noBtn.addEventListener("pointerenter", moveNoButton);
+  noBtn.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    moveNoButton();
+  });
+  noBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    moveNoButton();
+  });
+  noBtn.addEventListener("touchstart", (event) => {
+    event.preventDefault();
+    moveNoButton();
+  }, {passive:false});
+
+  yesBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    noBtn.style.position = "";
+    noBtn.style.left = "";
+    noBtn.style.top = "";
+    noBtn.style.margin = "";
+    noBtn.style.zIndex = "";
+    noBtn.style.transform = "";
+    isEscaping = false;
+    if (feedback) feedback.textContent = "";
+    if (quizReveal) quizReveal.classList.add("show");
+
+    // Build the message directly on click so the effect cannot fail because of stale CSS state.
+    reveal.innerHTML = '<div class="yes-image-halo"></div><div class="love-message">I loveee youuu <span>♡</span></div>';
+    reveal.style.display = "flex";
+    reveal.style.visibility = "visible";
+    reveal.style.opacity = "1";
+    reveal.style.pointerEvents = "none";
+    reveal.classList.remove("show");
+    const message = reveal.querySelector(".love-message");
+    const halo = reveal.querySelector(".yes-image-halo");
+    if (message) {
+      message.style.animation = "none";
+      message.style.opacity = "0";
+      message.style.transform = "scale(.04)";
+      message.style.filter = "blur(12px)";
+    }
+    if (halo) {
+      halo.style.animation = "none";
+      halo.style.opacity = "0";
+      halo.style.transform = "scale(.1)";
+    }
+    void reveal.offsetWidth;
+    reveal.classList.add("show");
+    if (message) message.style.animation = "loveTextBloom 4.8s cubic-bezier(.18,.7,.24,1) forwards";
+    if (halo) halo.style.animation = "haloBloom 4.8s ease-out forwards";
+    reveal.setAttribute("aria-hidden", "false");
+
+    window.clearTimeout(window.__loveRevealTimer);
+    window.__loveRevealTimer = window.setTimeout(() => {
+      reveal.classList.remove("show");
+      reveal.style.opacity = "0";
+      reveal.style.visibility = "hidden";
+      reveal.style.display = "none";
+      reveal.setAttribute("aria-hidden", "true");
+      // Once the full “I loveee youuu” bloom finishes, automatically move
+      // from the quiz (slide 4) to the next scrapbook section (slide 5).
+      if (current === 4) {
+        go(5);
+      }
+    }, 4900);
+  });
+
+  window.addEventListener("resize", () => {
+    if (!isEscaping) return;
+    const rect = noBtn.getBoundingClientRect();
+    noBtn.style.left = Math.max(18, Math.min(window.innerWidth - rect.width - 18, rect.left)) + "px";
+    noBtn.style.top = Math.max(18, Math.min(window.innerHeight - rect.height - 18, rect.top)) + "px";
+  });
+})();
+
+function answer(correct){ /* Custom yes/no quiz is handled above. */ }
+function sprinkle(count=14){const bits=['♡','✿','✧','🌷','💗','✦'];for(let i=0;i<count;i++){const e=document.createElement('span');e.className='floaty';e.textContent=bits[Math.floor(Math.random()*bits.length)];e.style.left=Math.random()*100+'vw';e.style.bottom='-30px';e.style.fontSize=(14+Math.random()*22)+'px';e.style.animationDuration=(2+Math.random()*2)+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),4300)}}
+let musicOn = false;
+async function toggleMusic() {
+    const audio = document.getElementById("backgroundSong");
+    const button = document.getElementById("soundBtn");
+    if (!audio) {
+        alert("Audio player not found in index.html.");
+        return;
+    }
+    if (!musicOn) {
+        try {
+            await audio.play();
+            musicOn = true;
+            button.textContent = "♫ pause song";
+        } catch (error) {
+            console.error("Audio playback failed:", error.name, error.message);
+            button.textContent = "♫ play song";
+            alert("Could not play audio: " + error.name + ". Check the audio path and file format.");
+        }
+    } else {
+        audio.pause();
+        musicOn = false;
+        button.textContent = "♫ play song";
+    }
+}
+
+// Memory-photo hover songs.
+// Put audio/memory1.mp3 ... audio/memory4.mp3 beside the main song.
+// Hovering a photo pauses the main song temporarily; leaving restores its exact position
+// and resumes it only if it had already been playing.
+(function setupMemoryHoverSongs(){
+  const mainSong = document.getElementById("backgroundSong");
+  const bars = [...document.querySelectorAll("#s3 .memory-soundbar")];
+  let activeBar = null;
+  let mainWasPlaying = false;
+  let mainTime = 0;
+  let mainVolume = 1;
+
+  function stopActiveMemory(resumeMain = true) {
+    if (activeBar) {
+      const audio = activeBar.querySelector(".memory-audio");
+      const fill = activeBar.querySelector(".memory-track-fill");
+      activeBar.classList.remove("is-playing");
+      if (audio) {
+        audio.pause();
+        try { audio.currentTime = 0; } catch (_) {}
+      }
+      if (fill) fill.style.width = "0%";
+      activeBar = null;
+    }
+    if (resumeMain && mainSong && mainWasPlaying) {
+      try { mainSong.currentTime = mainTime; } catch (_) {}
+      mainSong.volume = mainVolume;
+      mainSong.play().catch(err => console.warn("Main song could not resume:", err));
+    }
+  }
+
+  bars.forEach((bar) => {
+    const index = Number(bar.dataset.memory || 0);
+    const photo = document.getElementById("photo" + index);
+    const audio = bar.querySelector(".memory-audio");
+    const button = bar.querySelector(".memory-play");
+    const fill = bar.querySelector(".memory-track-fill");
+
+    if (!photo || !audio || !button) return;
+
+    async function startMemorySong() {
+      if (activeBar === bar && !audio.paused) return;
+      stopActiveMemory(false);
+      mainWasPlaying = !!(mainSong && !mainSong.paused && !mainSong.ended);
+      mainTime = mainSong ? mainSong.currentTime : 0;
+      mainVolume = mainSong ? mainSong.volume : 1;
+      if (mainSong) mainSong.pause();
+      activeBar = bar;
+      bar.classList.add("is-playing");
+      try {
+        await audio.play();
+      } catch (err) {
+        bar.classList.remove("is-playing");
+        if (activeBar === bar) activeBar = null;
+        if (mainSong && mainWasPlaying) {
+          try { mainSong.currentTime = mainTime; } catch (_) {}
+          mainSong.play().catch(() => {});
+        }
+        console.warn("Memory song could not play. Check the audio/memory" + (index + 1) + ".mp3 file.", err);
+      }
+    }
+
+    function leavePhoto() {
+      if (activeBar === bar) stopActiveMemory(true);
+    }
+
+    photo.addEventListener("pointerenter", startMemorySong);
+    photo.addEventListener("pointerleave", leavePhoto);
+    // Keyboard/touch fallback: click the bar to preview; clicking again stops it.
+    button.addEventListener("click", () => {
+      if (activeBar === bar && !audio.paused) {
+        stopActiveMemory(true);
+      } else {
+        startMemorySong();
+      }
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      if (audio.duration && Number.isFinite(audio.duration) && fill) {
+        fill.style.width = Math.min(100, (audio.currentTime / audio.duration) * 100) + "%";
+      }
+    });
+    audio.addEventListener("ended", () => {
+      if (activeBar === bar) stopActiveMemory(true);
+    });
+    audio.addEventListener("error", () => {
+      button.title = "Add your song at audio/memory" + (index + 1) + ".mp3";
+    });
+  });
+})();
+
+// Opening question gate: change the correct option and the temporary portrait URLs here.
+const SECRET_ANSWER = "My Jaaaannnnuuuu";
+const identityGate = document.getElementById("identityGate");
+const identityForm = document.getElementById("identityForm");
+const identityError = document.getElementById("identityError");
+const gatePetalStage = document.getElementById("gatePetalStage");
+const TEMP_PORTRAITS = [
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=420&q=85",
+  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=420&q=85",
+  "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=420&q=85",
+  "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=420&q=85"
+];
+
+identityForm.addEventListener("submit", function(event) {
+  event.preventDefault();
+  const selected = identityForm.querySelector('input[name="identityChoice"]:checked');
+  if (!selected) {
+    identityError.textContent = "Choose one little answer first ♡";
+    return;
+  }
+  if (selected.value.trim().toLocaleLowerCase() === SECRET_ANSWER.trim().toLocaleLowerCase()) {
+    identityError.textContent = "";
+    identityGate.classList.add("garden-opening");
+    bloomGateFlowers();
+    setTimeout(() => {
+      identityGate.classList.add("gate-hidden");
+      setTimeout(() => { identityGate.style.display = "none"; }, 1050);
+    }, 650);
+    sprinkle(55);
+  } else {
+    identityError.textContent = "The garden hasn't recognised that answer yet. Try another ♡";
+    const wrongChoice = selected.closest(".identity-choice");
+    wrongChoice.classList.add("wrong-choice");
+    selected.checked = false; // Wrong answer is immediately deselected.
+    setTimeout(() => wrongChoice.classList.remove("wrong-choice"), 420);
+    const card = identityGate.querySelector(".gate-card");
+    card.animate([{transform:"translateX(0)"},{transform:"translateX(-8px) rotate(-.4deg)"},{transform:"translateX(8px) rotate(.4deg)"},{transform:"translateX(0)"}],{duration:360});
+  }
+});
+
+function bloomGateFlowers() {
+  // A big cascade of oversized pink/lily-like petals, plus portrait petals.
+  const petalCount = 150;
+  for (let i = 0; i < petalCount; i++) {
+    const petal = document.createElement("span");
+    petal.className = "gate-petal";
+    const w = 14 + Math.random() * 48;
+    petal.style.setProperty("--x", Math.random() * 100 + "vw");
+    petal.style.setProperty("--w", w + "px");
+    petal.style.setProperty("--h", (w * (1.25 + Math.random() * .7)) + "px");
+    petal.style.setProperty("--rot", Math.round(Math.random() * 360) + "deg");
+    petal.style.setProperty("--sway", (Math.random() * 170 - 85) + "px");
+    petal.style.setProperty("--duration", "5s");
+    petal.style.setProperty("--delay", (Math.random() * 1.8) + "s");
+    petal.style.setProperty("--op", (.55 + Math.random() * .45).toFixed(2));
+    gatePetalStage.appendChild(petal);
+  }
+  // Large photo petals: temporary stock portraits; replace TEMP_PORTRAITS with your photos.
+  TEMP_PORTRAITS.forEach((url, i) => {
+    const petal = document.createElement("span");
+    petal.className = "gate-petal photo-petal";
+    petal.style.setProperty("--x", (8 + i * 21 + Math.random() * 7) + "vw");
+    petal.style.setProperty("--w", (clampPortraitWidth()) + "px");
+    petal.style.setProperty("--h", (clampPortraitWidth() * 1.36) + "px");
+    petal.style.setProperty("--rot", (Math.random() * 40 - 20) + "deg");
+    petal.style.setProperty("--sway", (Math.random() * 130 - 65) + "px");
+    petal.style.setProperty("--duration", "5s");
+    petal.style.setProperty("--delay", (i * 0.35) + "s");
+    const img = document.createElement("img");
+    img.src = url;
+    img.alt = "Temporary portrait placeholder " + (i + 1);
+    petal.appendChild(img);
+    // Keep the photo petals in a fixed viewport layer so they remain visible
+    // all the way to the bottom even after the question card fades away.
+    if (gatePetalStage.parentElement !== document.body) document.body.appendChild(gatePetalStage);
+    gatePetalStage.appendChild(petal);
+  });
+}
+function clampPortraitWidth() { return Math.min(132, Math.max(76, window.innerWidth * .22)); }
+
+renderLetterPage();
+go(0);
+</script>
+
+</body></html>
